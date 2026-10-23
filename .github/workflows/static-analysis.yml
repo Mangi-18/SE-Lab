@@ -1,0 +1,27 @@
+name: Static Analysis
+
+on: [push, pull_request]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install tools
+        run: pip install pylint bandit flake8
+
+      - name: Run Pylint
+        run: pylint bike_share_stations.py --fail-under=9.5
+
+      - name: Run Flake8
+        run: flake8 bike_share_stations.py
+
+      - name: Run Bandit
+        run: bandit bike_share_stations.py
